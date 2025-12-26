@@ -1,0 +1,556 @@
+[
+  {
+    "table": "credilink_basic",
+    "schema": [
+      {
+        "cid": 0,
+        "name": "CPF",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 1,
+        "name": "NOME",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "TIPO_ENDERECO",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "LOGRADOURO",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "NUMERO",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "COMPLEMENTO",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "BAIRRO",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "CIDADE",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "ESTADO",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "UF",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 10,
+        "name": "CEP",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 11,
+        "name": "DT_NASCIMENTO",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 12,
+        "name": "NOME_MAE",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 13,
+        "name": "SEXO",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 14,
+        "name": "EMAIL",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 15,
+        "name": "FLAG_OBITO",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 16,
+        "name": "DT_OBITO",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 17,
+        "name": "STATUS_RECEITA_FEDERAL",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 18,
+        "name": "PCT_CARGO_SOCIETARIO",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 19,
+        "name": "CBO",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 20,
+        "name": "QT_VEICULOS",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 21,
+        "name": "MARCA_VEICULO1",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 22,
+        "name": "MODELO_VEICULO1",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 23,
+        "name": "ANO_VEICULO1",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 24,
+        "name": "MARCA_VEICULO2",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 25,
+        "name": "MODELO_VEICULO2",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 26,
+        "name": "ANO_VEICULO2",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 27,
+        "name": "MARCA_VEICULO3",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 28,
+        "name": "MODELO_VEICULO3",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 29,
+        "name": "ANO_VEICULO3",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 30,
+        "name": "MARCA_VEICULO4",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 31,
+        "name": "MODELO_VEICULO4",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 32,
+        "name": "ANO_VEICULO4",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 33,
+        "name": "MARCA_VEICULO5",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 34,
+        "name": "MODELO_VEICULO5",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 35,
+        "name": "ANO_VEICULO5",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 36,
+        "name": "RENDA_PRESUMIDA",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 37,
+        "name": "FAIXA_RENDA",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      }
+    ],
+    "sample": [
+      {
+        "CPF": "07060114068",
+        "NOME": "ROMEU ALTMANN",
+        "TIPO_ENDERECO": "PRACA",
+        "LOGRADOURO": "NACOES UNIDAS",
+        "NUMERO": "61",
+        "COMPLEMENTO": "AP1105",
+        "BAIRRO": "PETROPOLIS",
+        "CIDADE": "PORTO ALEGRE",
+        "ESTADO": "RIO GRANDE DO SUL",
+        "UF": "RS",
+        "CEP": "90690230",
+        "DT_NASCIMENTO": "29/10/1945",
+        "NOME_MAE": "LIDIA MATHILDE ELY ALTMANN",
+        "SEXO": "M",
+        "EMAIL": "SERRASANTONIO@YAHOO.COM.BR",
+        "FLAG_OBITO": "0",
+        "DT_OBITO": null,
+        "STATUS_RECEITA_FEDERAL": "REGULAR",
+        "PCT_CARGO_SOCIETARIO": null,
+        "CBO": null,
+        "QT_VEICULOS": "0",
+        "MARCA_VEICULO1": null,
+        "MODELO_VEICULO1": null,
+        "ANO_VEICULO1": null,
+        "MARCA_VEICULO2": null,
+        "MODELO_VEICULO2": null,
+        "ANO_VEICULO2": null,
+        "MARCA_VEICULO3": null,
+        "MODELO_VEICULO3": null,
+        "ANO_VEICULO3": null,
+        "MARCA_VEICULO4": null,
+        "MODELO_VEICULO4": null,
+        "ANO_VEICULO4": null,
+        "MARCA_VEICULO5": null,
+        "MODELO_VEICULO5": null,
+        "ANO_VEICULO5": null,
+        "RENDA_PRESUMIDA": "2730",
+        "FAIXA_RENDA": "3"
+      },
+      {
+        "CPF": "07060114220",
+        "NOME": "EDMILSON BEZERRA DA SILVA",
+        "TIPO_ENDERECO": "RUA",
+        "LOGRADOURO": "XINGU",
+        "NUMERO": "1540",
+        "COMPLEMENTO": null,
+        "BAIRRO": "INTERVENTORIA",
+        "CIDADE": "SANTAREM",
+        "ESTADO": "PARA",
+        "UF": "PA",
+        "CEP": "68020140",
+        "DT_NASCIMENTO": "05/11/1958",
+        "NOME_MAE": "MARIA DE LOURDES B DA SILVA",
+        "SEXO": "M",
+        "EMAIL": null,
+        "FLAG_OBITO": "0",
+        "DT_OBITO": null,
+        "STATUS_RECEITA_FEDERAL": "REGULAR",
+        "PCT_CARGO_SOCIETARIO": "100",
+        "CBO": null,
+        "QT_VEICULOS": "0",
+        "MARCA_VEICULO1": null,
+        "MODELO_VEICULO1": null,
+        "ANO_VEICULO1": null,
+        "MARCA_VEICULO2": null,
+        "MODELO_VEICULO2": null,
+        "ANO_VEICULO2": null,
+        "MARCA_VEICULO3": null,
+        "MODELO_VEICULO3": null,
+        "ANO_VEICULO3": null,
+        "MARCA_VEICULO4": null,
+        "MODELO_VEICULO4": null,
+        "ANO_VEICULO4": null,
+        "MARCA_VEICULO5": null,
+        "MODELO_VEICULO5": null,
+        "ANO_VEICULO5": null,
+        "RENDA_PRESUMIDA": "1565",
+        "FAIXA_RENDA": "2"
+      },
+      {
+        "CPF": "07060114300",
+        "NOME": "ANTONIO FARIAS DE ALMEIDA",
+        "TIPO_ENDERECO": "RUA",
+        "LOGRADOURO": "CARMELINA SAMPAIO",
+        "NUMERO": "130",
+        "COMPLEMENTO": null,
+        "BAIRRO": "AT DO JOSE ROS",
+        "CIDADE": "BOA VIAGEM",
+        "ESTADO": "CEARA",
+        "UF": "CE",
+        "CEP": "63870000",
+        "DT_NASCIMENTO": "04/12/1934",
+        "NOME_MAE": "AMELIA FARIAS DE ALMEIDA",
+        "SEXO": "M",
+        "EMAIL": null,
+        "FLAG_OBITO": "0",
+        "DT_OBITO": null,
+        "STATUS_RECEITA_FEDERAL": "REGULAR",
+        "PCT_CARGO_SOCIETARIO": null,
+        "CBO": null,
+        "QT_VEICULOS": "0",
+        "MARCA_VEICULO1": null,
+        "MODELO_VEICULO1": null,
+        "ANO_VEICULO1": null,
+        "MARCA_VEICULO2": null,
+        "MODELO_VEICULO2": null,
+        "ANO_VEICULO2": null,
+        "MARCA_VEICULO3": null,
+        "MODELO_VEICULO3": null,
+        "ANO_VEICULO3": null,
+        "MARCA_VEICULO4": null,
+        "MODELO_VEICULO4": null,
+        "ANO_VEICULO4": null,
+        "MARCA_VEICULO5": null,
+        "MODELO_VEICULO5": null,
+        "ANO_VEICULO5": null,
+        "RENDA_PRESUMIDA": "954",
+        "FAIXA_RENDA": "1"
+      },
+      {
+        "CPF": "07060114491",
+        "NOME": "REGINALDO MOURA DA SILVA",
+        "TIPO_ENDERECO": "RUA",
+        "LOGRADOURO": "TREZE DE MAIO",
+        "NUMERO": "948",
+        "COMPLEMENTO": null,
+        "BAIRRO": "CAJUEIRO SECO",
+        "CIDADE": "JABOATAO DOS GUARARAPES",
+        "ESTADO": "PERNAMBUCO",
+        "UF": "PE",
+        "CEP": "54330550",
+        "DT_NASCIMENTO": "03/12/1934",
+        "NOME_MAE": "LUIZA DA SILVA",
+        "SEXO": "M",
+        "EMAIL": null,
+        "FLAG_OBITO": "1",
+        "DT_OBITO": "03/02/2014",
+        "STATUS_RECEITA_FEDERAL": "TITULAR FALECIDO",
+        "PCT_CARGO_SOCIETARIO": null,
+        "CBO": null,
+        "QT_VEICULOS": "0",
+        "MARCA_VEICULO1": null,
+        "MODELO_VEICULO1": null,
+        "ANO_VEICULO1": null,
+        "MARCA_VEICULO2": null,
+        "MODELO_VEICULO2": null,
+        "ANO_VEICULO2": null,
+        "MARCA_VEICULO3": null,
+        "MODELO_VEICULO3": null,
+        "ANO_VEICULO3": null,
+        "MARCA_VEICULO4": null,
+        "MODELO_VEICULO4": null,
+        "ANO_VEICULO4": null,
+        "MARCA_VEICULO5": null,
+        "MODELO_VEICULO5": null,
+        "ANO_VEICULO5": null,
+        "RENDA_PRESUMIDA": "788",
+        "FAIXA_RENDA": "1"
+      },
+      {
+        "CPF": "07060114572",
+        "NOME": "PEDRO FERREIRA DA SILVA",
+        "TIPO_ENDERECO": "RUA",
+        "LOGRADOURO": "SATURNINO MENDES",
+        "NUMERO": "29",
+        "COMPLEMENTO": null,
+        "BAIRRO": "BALDEZ",
+        "CIDADE": "CONCEICAO DO JACUIPE",
+        "ESTADO": "BAHIA",
+        "UF": "BA",
+        "CEP": "44245000",
+        "DT_NASCIMENTO": "29/06/1955",
+        "NOME_MAE": "MARIA ADELAIDE DOS SANTOS",
+        "SEXO": "M",
+        "EMAIL": null,
+        "FLAG_OBITO": "0",
+        "DT_OBITO": null,
+        "STATUS_RECEITA_FEDERAL": "REGULAR",
+        "PCT_CARGO_SOCIETARIO": null,
+        "CBO": null,
+        "QT_VEICULOS": "0",
+        "MARCA_VEICULO1": null,
+        "MODELO_VEICULO1": null,
+        "ANO_VEICULO1": null,
+        "MARCA_VEICULO2": null,
+        "MODELO_VEICULO2": null,
+        "ANO_VEICULO2": null,
+        "MARCA_VEICULO3": null,
+        "MODELO_VEICULO3": null,
+        "ANO_VEICULO3": null,
+        "MARCA_VEICULO4": null,
+        "MODELO_VEICULO4": null,
+        "ANO_VEICULO4": null,
+        "MARCA_VEICULO5": null,
+        "MODELO_VEICULO5": null,
+        "ANO_VEICULO5": null,
+        "RENDA_PRESUMIDA": "1077",
+        "FAIXA_RENDA": "2"
+      }
+    ]
+  },
+  {
+    "table": "telefone",
+    "schema": [
+      {
+        "cid": 0,
+        "name": "CPF",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 1,
+        "name": "TELEFONES",
+        "type": "TEXT",
+        "notnull": 0,
+        "default_value": null,
+        "pk": 0
+      }
+    ],
+    "sample": [
+      {
+        "CPF": "07060114068",
+        "TELEFONES": "47984475000"
+      },
+      {
+        "CPF": "07060114068",
+        "TELEFONES": "47991159520"
+      },
+      {
+        "CPF": "07060114068",
+        "TELEFONES": "47984468119"
+      },
+      {
+        "CPF": "07060114068",
+        "TELEFONES": "47992736310"
+      },
+      {
+        "CPF": "07060115463",
+        "TELEFONES": "74999215032"
+      }
+    ]
+  }
+]

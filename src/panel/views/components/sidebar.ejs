@@ -1,0 +1,114 @@
+<!-- =========================
+     SIDEBAR FIXA
+     ========================= -->
+<div 
+  class="fixed w-64 h-screen bg-gray-900 border-r border-gray-700"
+  x-data="{ open: true }"
+>
+
+  <!-- Logo / Brand -->
+  <div class="flex items-center justify-between h-16 px-6 border-b border-gray-700">
+    <a href="/dashboard" class="text-2xl font-bold text-white">
+      FR4UD<span class="text-indigo-400">.</span>
+    </a>
+  </div>
+
+  <!-- Navegação -->
+  <nav class="mt-4">
+
+    <!-- Dashboard -->
+    <a 
+      href="/dashboard"
+      class="flex items-center px-6 py-3 text-gray-400 hover:bg-gray-800 hover:text-white
+      <%= activePage === 'dashboard' ? 'bg-gray-800 text-white' : '' %>"
+    >
+      <!-- Ícone: Home -->
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M3 12l2-2 7-7 7 7 2 2v10a1 1 0 01-1 1h-3m-6 0h6"
+        />
+      </svg>
+      <span class="ml-3">Dashboard</span>
+    </a>
+
+    <!-- API Keys -->
+    <a 
+      href="/api-keys"
+      class="flex items-center px-6 py-3 text-gray-400 hover:bg-gray-800 hover:text-white
+      <%= activePage === 'api-keys' ? 'bg-gray-800 text-white' : '' %>"
+    >
+      <!-- Ícone: Key -->
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M15 7a2 2 0 012 2 6 6 0 01-7.743 5.743L11 17H9v2H7v2H5v-2H3v-2h2v-2h2v-2h2l2.057-2.057A6 6 0 0121 11"
+        />
+      </svg>
+      <span class="ml-3">Chaves de API</span>
+    </a>
+
+    <!-- Billing / PIX -->
+    <a 
+      href="/pix"
+      class="flex items-center px-6 py-3 text-gray-400 hover:bg-gray-800 hover:text-white
+      <%= activePage === 'pix' ? 'bg-gray-800 text-white' : '' %>"
+    >
+      <!-- Ícone: Dinheiro -->
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2
+             3 .895 3 2-1.343 2-3 2m0-8V7m0 10v-1"
+        />
+      </svg>
+      <span class="ml-3">Pagamentos / PIX</span>
+    </a>
+
+    <!-- Logs -->
+    <a 
+      href="/logs"
+      class="flex items-center px-6 py-3 text-gray-400 hover:bg-gray-800 hover:text-white
+      <%= activePage === 'logs' ? 'bg-gray-800 text-white' : '' %>"
+    >
+      <!-- Ícone: Logs -->
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7
+             a2 2 0 00-2-2h-2"
+        />
+      </svg>
+      <span class="ml-3">Logs de Atividade</span>
+    </a>
+
+    <!-- =========================
+         ÁREA ADMIN
+         ========================= -->
+    <% if (user && user.role === 'admin') { %>
+      <div class="mt-4 pt-4 border-t border-gray-700">
+
+        <h6 class="px-6 text-xs font-semibold tracking-wider text-gray-500 uppercase">
+          Administração
+        </h6>
+
+        <!-- Usuários -->
+        <a 
+          href="/admin/users"
+          class="flex items-center px-6 py-3 text-gray-400 hover:bg-gray-800 hover:text-white
+          <%= activePage === 'admin-users' ? 'bg-gray-800 text-white' : '' %>"
+        >
+          <!-- Ícone: Users -->
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 12a4 4 0 100-8 4 4 0 000 8zm0 0
+                 a6 6 0 00-6 6v1h12v-1a6 6 0 00-6-6z"
+            />
+          </svg>
+          <span class="ml-3">Usuários</span>
+        </a>
+
+      </div>
+    <% } %>
+
+  </nav>
+</div>
+
+<!-- Spacer pra não quebrar layout -->
+<div class="w-64 flex-shrink-0"></div>

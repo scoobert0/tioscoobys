@@ -1,0 +1,114 @@
+<%- include('../layout', { 
+  title: 'User Management', 
+  user: user, 
+  activePage: 'admin-users',
+  body: `
+  <div class="mt-4">
+
+    <!-- Descrição da página -->
+    <p class="text-gray-400 mb-6">
+      Gerencie contas de usuários, status, pendências e ações administrativas.
+      Aqui quem manda é você.
+    </p>
+
+    <!-- =========================
+         TABELA DE USUÁRIOS
+         ========================= -->
+    <div class="overflow-x-auto bg-gray-800 rounded-lg shadow-md">
+
+      <table class="min-w-full text-sm text-left text-gray-400">
+
+        <!-- Cabeçalho -->
+        <thead class="text-xs uppercase bg-gray-700 text-gray-400">
+          <tr>
+            <th class="px-6 py-3">User</th>
+            <th class="px-6 py-3">Role</th>
+            <th class="px-6 py-3">Status</th>
+            <th class="px-6 py-3">Unpaid PIX</th>
+            <th class="px-6 py-3">Joined</th>
+            <th class="px-6 py-3">Actions</th>
+          </tr>
+        </thead>
+
+        <!-- Corpo -->
+        <tbody>
+
+          <% if (allUsers && allUsers.length > 0) { %>
+
+            <% allUsers.forEach(u => { %>
+              <tr class="border-b border-gray-700 hover:bg-gray-750 transition">
+
+                <!-- Username -->
+                <td class="px-6 py-4 font-medium text-white">
+                  <%= u.username %>
+                </td>
+
+                <!-- Role -->
+                <td class="px-6 py-4">
+                  <%= u.role %>
+                </td>
+
+                <!-- Status -->
+                <td class="px-6 py-4">
+                  <span class="px-2 py-1 text-xs font-semibold rounded-full
+                    <%= u.suspended 
+                      ? 'bg-red-600 text-red-100' 
+                      : 'bg-green-600 text-green-100' 
+                    %>
+                  ">
+                    <%= u.suspended ? 'Suspended' : 'Active' %>
+                  </span>
+                </td>
+
+                <!-- PIX pendentes -->
+                <td class="px-6 py-4">
+                  <%= u.unpaid_pix_count %>
+                </td>
+
+                <!-- Data de criação -->
+                <td class="px-6 py-4">
+                  <%= new Date(u.created_at).toLocaleDateString() %>
+                </td>
+
+                <!-- Ações -->
+                <td class="px-6 py-4">
+                  <form 
+                    action="/admin/users/<%= u.id %>/suspend" 
+                    method="POST"
+                  >
+                    <button 
+                      type="submit"
+                      class="font-medium
+                        <%= u.suspended 
+                          ? 'text-green-400 hover:text-green-300' 
+                          : 'text-red-400 hover:text-red-300' 
+                        %>
+                      "
+                    >
+                      <%= u.suspended ? 'Reactivate' : 'Suspend' %>
+                    </button>
+                  </form>
+                </td>
+
+              </tr>
+            <% }) %>
+
+          <% } else { %>
+
+            <!-- Estado vazio -->
+            <tr>
+              <td 
+                colspan="6" 
+                class="text-center py-10 text-gray-500"
+              >
+                No users found.
+              </td>
+            </tr>
+
+          <% } %>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+` }) %>

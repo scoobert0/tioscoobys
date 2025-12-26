@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-200 min-h-screen">
+    <header class="bg-gray-800 border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <h1 class="text-xl font-bold text-white">📸 <%= title %></h1>
+            <div class="flex items-center gap-4">
+                <span class="text-sm text-gray-400">Bem-vindo, <%= username %>!</span>
+                <a href="/dashboard" class="text-sm text-blue-400 hover:text-blue-300">Dashboard</a>
+                <a href="/logout" class="text-sm text-red-400 hover:text-red-300">Logout</a>
+            </div>
+        </div>
+    </header>
+    <main class="max-w-7xl mx-auto px-6 py-6">
+        <h2 class="text-2xl font-bold text-white mb-6">Consulta de Foto por CPF</h2>
+
+        <div class="bg-gray-800 p-6 rounded-lg mb-8">
+            <form id="searchForm" class="space-y-4">
+                <div>
+                    <label for="cpf" class="block text-sm font-medium text-gray-300">Número do CPF</label>
+                    <input type="text" id="cpf" name="cpf" required class="mt-1 block w-full md:w-1/2 rounded-md bg-gray-700 border-gray-600 text-white focus:border-indigo-500 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label for="level" class="block text-sm font-medium text-gray-300">Nível de Detalhe</label>
+                    <select id="level" name="level" class="mt-1 block w-full md:w-1/4 rounded-md bg-gray-700 border-gray-600 text-white focus:border-indigo-500 focus:ring-indigo-500">
+                        <option value="basic">Básico</option>
+                        <option value="medium">Médio</option>
+                        <option value="advanced">Avançado</option>
+                    </select>
+                </div>
+                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Consultar
+                </button>
+            </form>
+        </div>
+
+        <h3 class="text-xl font-bold text-white mb-4">Resultados da Consulta</h3>
+        <div id="results" class="bg-gray-800 p-6 rounded-lg">
+            <p class="text-gray-400">Nenhum resultado para exibir ainda.</p>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const cpf = document.getElementById('cpf').value;
+            const level = document.getElementById('level').value;
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<p class="text-gray-400">Carregando...</p>';
+
+            try {
+                const response = await fetch(`/api/search/foto/cpf/${cpf}?level=${level}`, {
+                    headers: {
+                        'X-API-Key': '<%= user.api_key_value %>'
+                    }
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    resultsDiv.innerHTML = formatResults(data.data);
+                } else {
+                    resultsDiv.innerHTML = `<p class="text-red-400">Erro: ${data.message || data.error || 'Ocorreu um erro na consulta.'}</p>`;
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                resultsDiv.innerHTML = `<p class="text-red-400">Erro de conexão: ${error.message}</p>`;
+            }
+        });
+
+        function formatResults(data) {
+            let html = '';
+            for (const dbName in data) {
+                if (data[dbName] && data[dbName].length > 0) {
+                    html += `<div class="mb-6">`;
+                    html += `<h4 class="text-lg font-bold text-white mb-2">${dbName.toUpperCase()}</h4>`;
+                    data[dbName].forEach(item => {
+                        html += `<ul class="list-disc list-inside bg-gray-700 p-4 rounded-md mb-2">`;
+                        for (const key in item) {
+                            if (key === 'foto_base64' && item[key]) {
+                                html += `<li><span class="font-semibold">${key}:</span> <img src="data:image/jpeg;base64,${item[key]}" class="w-24 h-24 object-cover mt-2 rounded-md"></li>`;
+                            } else {
+                                html += `<li><span class="font-semibold">${key}:</span> ${item[key]}</li>`;
+                            }
+                        }
+                        html += `</ul>`;
+                    });
+                    html += `</div>`;
+                }
+            }
+            if (html === '') {
+                return '<p class="text-gray-400">Nenhum resultado encontrado.</p>';
+            }
+            return html;
+        }
+    </script>
+</body>
+</html>

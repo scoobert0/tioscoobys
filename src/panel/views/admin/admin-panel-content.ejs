@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Heroicons (ícones) via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/heroicons/2.1.1/outline.min.js"></script>
+
+    <!-- Configuração Tailwind -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        bg: '#0f172a',
+                        primary: '#3b82f6',
+                        success: '#10b981',
+                        danger: '#ef4444',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Fonte Inter (melhor legibilidade) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+
+<body class="dark bg-bg text-gray-200 min-h-screen antialiased">
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+
+    <!-- Cabeçalho -->
+    <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h1 class="text-4xl font-bold tracking-tight text-white">
+                Admin Panel
+            </h1>
+            <p class="mt-2 text-gray-400">
+                Gerencie usuários, chaves de API e controle total do sistema.
+            </p>
+        </div>
+        <div class="text-sm text-gray-500">
+            <%= new Date().toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
+        </div>
+    </header>
+
+    <!-- Mensagens de feedback -->
+    <% if (message) { %>
+        <div class="flex items-center gap-3 p-4 rounded-lg bg-green-600/10 border border-green-600 text-green-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span><%= message %></span>
+        </div>
+    <% } %>
+
+    <% if (error) { %>
+        <div class="flex items-center gap-3 p-4 rounded-lg bg-red-600/10 border border-red-600 text-red-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+            <span><%= error %></span>
+        </div>
+    <% } %>
+
+    <div class="grid lg:grid-cols-2 gap-8">
+
+        <!-- Criar Usuário -->
+        <section class="bg-gray-900/70 backdrop-blur border border-gray-800 rounded-2xl p-6 shadow-xl">
+            <h2 class="text-2xl font-semibold text-white mb-6 flex items-center gap-3">
+                <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                </svg>
+                Criar Novo Usuário
+            </h2>
+
+            <form action="/admin/create-user" method="POST" class="space-y-5">
+                <div class="grid sm:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Username</label>
+                        <input
+                            type="text"
+                            name="username"
+                            placeholder="ex: joao123"
+                            required
+                            class="w-full px-4 py-3 bg-gray-800/60 border border-gray-700 rounded-xl text-white placeholder-gray-500
+                                   focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                        />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Senha</label>
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="••••••••"
+                            required
+                            class="w-full px-4 py-3 bg-gray-800/60 border border-gray-700 rounded-xl text-white placeholder-gray-500
+                                   focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                        />
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Função</label>
+                    <select
+                        name="role"
+                        class="w-full px-4 py-3 bg-gray-800/60 border border-gray-700 rounded-xl text-white
+                               focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                    >
+                        <option value="user">User (padrão)</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+
+                <button
+                    type="submit"
+                    class="w-full py-3 px-6 bg-primary hover:bg-blue-600 focus:ring-4 focus:ring-primary/50 rounded-xl font-semibold text-white shadow-lg hover:shadow-xl transition duration-200"
+                >
+                    Criar Usuário
+                </button>
+            </form>
+        </section>
+
+        <!-- Criar API Key -->
+        <section class="bg-gray-900/70 backdrop-blur border border-gray-800 rounded-2xl p-6 shadow-xl">
+            <h2 class="text-2xl font-semibold text-white mb-6 flex items-center gap-3">
+                <svg class="w-6 h-6 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                </svg>
+                Gerar Nova API Key
+            </h2>
+
+            <form action="/admin/create-key" method="POST" class="space-y-5">
+                <div class="grid sm:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Usuário</label>
+                        <select
+                            name="username"
+                            required
+                            class="w-full px-4 py-3 bg-gray-800/60 border border-gray-700 rounded-xl text-white
+                                   focus:outline-none focus:ring-2 focus:ring-success focus:border-transparent transition"
+                        >
+                            <option value="" disabled selected>Selecione um usuário</option>
+                            <% users.forEach(u => { %>
+                                <option value="<%= u.username %>"><%= u.username %></option>
+                            <% }); %>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Plano</label>
+                        <select
+                            name="plan"
+                            required
+                            class="w-full px-4 py-3 bg-gray-800/60 border border-gray-700 rounded-xl text-white
+                                   focus:outline-none focus:ring-2 focus:ring-success focus:border-transparent transition"
+                        >
+                            <option value="test">Test (24h)</option>
+                            <option value="weekly">Weekly (7 dias)</option>
+                            <option value="monthly">Monthly (30 dias)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button
+                    type="submit"
+                    class="w-full py-3 px-6 bg-success hover:bg-green-600 focus:ring-4 focus:ring-success/50 rounded-xl font-semibold text-white shadow-lg hover:shadow-xl transition duration-200"
+                >
+                    Gerar API Key
+                </button>
+            </form>
+        </section>
+    </div>
+
+    <!-- Lista de API Keys -->
+    <section class="bg-gray-900/70 backdrop-blur border border-gray-800 rounded-2xl p-6 shadow-xl overflow-hidden">
+        <h2 class="text-2xl font-semibold text-white mb-6 flex items-center gap-3">
+            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            </svg>
+            API Keys Ativas
+        </h2>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="text-left text-gray-400 uppercase text-xs border-b border-gray-700">
+                        <th class="py-4 font-medium">Usuário</th>
+                        <th class="py-4 font-medium">Chave</th>
+                        <th class="py-4 font-medium">Plano</th>
+                        <th class="py-4 font-medium">Expira em</th>
+                        <th class="py-4 font-medium text-center">Hoje</th>
+                        <th class="py-4 font-medium text-center">Status</th>
+                        <th class="py-4 font-medium text-center">Ação</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-800">
+                    <% apiKeys.forEach(key => { %>
+                    <tr class="hover:bg-gray-800/40 transition duration-150">
+                        <td class="py-4 font-medium text-white"><%= key.username %></td>
+                        <td class="py-4">
+                            <code class="px-3 py-1 text-xs bg-gray-800 rounded-lg font-mono text-gray-300 select-all">
+                                <%= key.api_key.substring(0, 20) %>...
+                            </code>
+                        </td>
+                        <td class="py-4 capitalize"><%= key.plan %></td>
+                        <td class="py-4 text-gray-300">
+                            <%= new Date(key.expires_at).toLocaleDateString('pt-BR') %>
+                            <span class="text-xs text-gray-500 block">
+                                <%= new Date(key.expires_at).toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'}) %>
+                            </span>
+                        </td>
+                        <td class="py-4 text-center font-semibold"><%= key.requests_today %></td>
+                        <td class="py-4 text-center">
+                            <span class="inline-flex px-3 py-1 text-xs font-semibold rounded-full
+                                <%= key.active 
+                                    ? 'bg-green-600/20 text-green-400 border border-green-600/50' 
+                                    : 'bg-red-600/20 text-red-400 border border-red-600/50' %>">
+                                <%= key.active ? 'Ativa' : 'Inativa' %>
+                            </span>
+                        </td>
+                        <td class="py-4 text-center">
+                            <form action="/admin/toggle-key/<%= key.id %>" method="POST" class="inline">
+                                <button
+                                    type="submit"
+                                    class="text-sm font-medium <%= key.active ? 'text-red-400 hover:text-red-300' : 'text-green-400 hover:text-green-300' %> transition"
+                                >
+                                    <%= key.active ? 'Desativar' : 'Ativar' %>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+
+            <% if (apiKeys.length === 0) { %>
+                <p class="text-center text-gray-500 py-12">Nenhuma API Key encontrada.</p>
+            <% } %>
+        </div>
+    </section>
+
+</div>
+
+</body>
+</html>

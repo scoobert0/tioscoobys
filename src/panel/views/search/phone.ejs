@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        
+        .glass {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-slate-900 via-blue-900/30 to-slate-900 text-gray-100 min-h-screen">
+
+    <!-- HEADER -->
+    <header class="backdrop-blur-lg bg-slate-900/70 border-b border-blue-500/20 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl flex items-center justify-center text-3xl shadow-2xl shadow-blue-500/30 animate-float">
+                    📞
+                </div>
+                <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
+                    <%= title %>
+                </h1>
+            </div>
+
+            <div class="flex items-center gap-8">
+                <span class="text-sm text-gray-300">
+                    Olá, <span class="font-semibold text-white"><%= username %></span> 👋
+                </span>
+                <div class="flex gap-4">
+                    <a href="/dashboard" class="px-6 py-3 text-sm font-medium bg-blue-600/20 text-blue-300 rounded-xl hover:bg-blue-600/40 hover:scale-105 transition-all shadow-md">
+                        Dashboard
+                    </a>
+                    <a href="/logout" class="px-6 py-3 text-sm font-medium bg-red-600/20 text-red-400 rounded-xl hover:bg-red-600/30 hover:scale-105 transition-all shadow-md">
+                        Sair
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="max-w-7xl mx-auto px-6 py-10">
+
+        <div class="mb-12">
+            <h2 class="text-4xl font-bold text-white mb-3">Consulta por Telefone</h2>
+            <p class="text-xl text-gray-400">Digite o telefone e selecione o nível de detalhe desejado</p>
+        </div>
+
+        <!-- FORM SEARCH -->
+        <div class="glass rounded-3xl p-10 mb-12 shadow-2xl shadow-blue-500/20 border-blue-500/30">
+            <form id="searchForm" class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <label for="telefone" class="block text-lg font-medium text-gray-300 mb-3">Número do Telefone</label>
+                    <input type="text" id="telefone" name="telefone" required 
+                           placeholder="Ex: 11987654321 ou 5511987654321" 
+                           class="w-full px-6 py-5 text-xl bg-slate-800/70 border border-blue-500/50 rounded-2xl focus:outline-none focus:border-cyan-400 focus:ring-4 focus:ring-cyan-500/30 text-white placeholder-gray-500">
+                </div>
+
+                <div>
+                    <label for="level" class="block text-lg font-medium text-gray-300 mb-3">Nível de Detalhe</label>
+                    <select id="level" name="level" 
+                            class="w-full px-6 py-5 text-xl bg-slate-800/70 border border-blue-500/50 rounded-2xl focus:outline-none focus:border-cyan-400 focus:ring-4 focus:ring-cyan-500/30 text-white">
+                        <option value="basic">Básico</option>
+                        <option value="medium">Médio</option>
+                        <option value="advanced">Avançado</option>
+                    </select>
+                </div>
+
+                <div class="md:col-span-2">
+                    <button type="submit" 
+                            class="w-full px-8 py-5 text-xl font-bold text-white bg-gradient-to-r from-indigo-600 to-blue-600 rounded-2xl hover:from-indigo-700 hover:to-blue-700 transform hover:scale-105 transition-all shadow-xl shadow-blue-500/40">
+                        Consultar Telefone Agora
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- RESULTS AREA -->
+        <div class="glass rounded-3xl p-10 shadow-2xl shadow-cyan-500/20 border-cyan-500/30">
+            <h3 class="text-3xl font-bold text-white mb-8 flex items-center gap-4">
+                <span class="text-4xl">📋</span> Resultados da Consulta
+            </h3>
+
+            <div id="results" class="min-h-[400px] flex flex-col items-center justify-center">
+                <p class="text-2xl text-gray-500 text-center">
+                    Preencha o formulário acima e clique em "Consultar" para visualizar os resultados.
+                </p>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            let telefone = document.getElementById('telefone').value.trim().replace(/\D/g, '');
+            const level = document.getElementById('level').value;
+            const resultsDiv = document.getElementById('results');
+
+            if (telefone.length < 10 || telefone.length > 13) {
+                resultsDiv.innerHTML = '<p class="text-red-400 text-2xl text-center font-bold">⚠️ Telefone inválido: deve conter DDD + número (10 a 13 dígitos).</p>';
+                return;
+            }
+
+            resultsDiv.innerHTML = `
+                <div class="text-center py-12">
+                    <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-cyan-500 mx-auto mb-6"></div>
+                    <p class="text-2xl text-gray-300">Consultando dados do telefone...</p>
+                    <p class="text-lg text-gray-500 mt-4">Aguarde enquanto buscamos nas bases disponíveis.</p>
+                </div>`;
+
+            try {
+                const response = await fetch(`/api/search/telefone/${telefone}?level=${level}`, {
+                    headers: {
+                        'X-API-Key': '<%= user.api_key_value %>'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.data) {
+                    resultsDiv.innerHTML = formatResults(data.data);
+                } else {
+                    resultsDiv.innerHTML = `
+                        <div class="text-center py-20">
+                            <p class="text-3xl text-red-400 font-bold mb-4">⚠️ Nenhum resultado encontrado</p>
+                            <p class="text-xl text-gray-400">O telefone consultado não retornou dados nas bases disponíveis.</p>
+                        </div>`;
+                }
+            } catch (error) {
+                console.error('Erro na consulta:', error);
+                resultsDiv.innerHTML = `
+                    <div class="text-center py-20">
+                        <p class="text-3xl text-red-400 font-bold mb-4">🔌 Erro de conexão</p>
+                        <p class="text-xl text-gray-400">Não foi possível completar a consulta. Tente novamente.</p>
+                    </div>`;
+            }
+        });
+
+        function formatResults(data) {
+            let html = '<div class="space-y-12">';
+
+            const dbOrder = ['contatos', 'cadsus', 'scores', 'veiculos', 'familiares', 'enderecos'];
+            const databases = Object.keys(data).sort((a, b) => {
+                const aIndex = dbOrder.indexOf(a);
+                const bIndex = dbOrder.indexOf(b);
+                return (aIndex === -1 ? 999 : aIndex) - (bIndex === -1 ? 999 : bIndex);
+            });
+
+            let totalResults = 0;
+
+            databases.forEach(dbName => {
+                if (data[dbName] && data[dbName].length > 0) {
+                    totalResults += data[dbName].length;
+
+                    html += `
+                        <div class="bg-slate-800/50 backdrop-blur-lg rounded-3xl p-8 border border-cyan-500/30 shadow-xl shadow-cyan-500/20">
+                            <h4 class="text-2xl font-bold text-cyan-300 mb-6 flex items-center gap-3">
+                                <span class="w-10 h-10 bg-cyan-600/30 rounded-xl flex items-center justify-center text-xl">📌</span>
+                                ${dbName.toUpperCase()} (${data[dbName].length} registro${data[dbName].length > 1 ? 's' : ''})
+                            </h4>
+                            <div class="space-y-8">`;
+
+                    data[dbName].forEach((item, index) => {
+                        html += `
+                            <div class="bg-slate-900/60 rounded-2xl p-6 border border-blue-500/20 hover:border-cyan-500/50 transition-all">
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">`;
+
+                        Object.keys(item).sort().forEach(key => {
+                            const value = item[key];
+                            if (value !== null && value !== undefined && value !== '') {
+                                html += `
+                                    <div class="flex flex-col">
+                                        <span class="text-sm text-blue-300 font-semibold uppercase tracking-wider">${key}</span>
+                                        <span class="text-lg text-white mt-1 break-words">${value}</span>
+                                    </div>`;
+                            }
+                        });
+
+                        html += `
+                                </div>
+                            </div>`;
+                    });
+
+                    html += `
+                            </div>
+                        </div>`;
+                }
+            });
+
+            html += '</div>';
+
+            if (totalResults === 0) {
+                return `
+                    <div class="text-center py-20">
+                        <p class="text-3xl text-gray-400 font-bold mb-4">📭 Nenhum dado encontrado</p>
+                        <p class="text-xl text-gray-500">Este telefone não possui registros nas bases consultadas no momento.</p>
+                    </div>`;
+            }
+
+            const header = `
+                <div class="text-center mb-10 pb-8 border-b border-cyan-500/30">
+                    <p class="text-4xl font-bold text-cyan-300">✅ Consulta Concluída</p>
+                    <p class="text-2xl text-gray-300 mt-4">Encontrados <span class="text-cyan-300 font-bold">${totalResults}</span> registro${totalResults > 1 ? 's' : ''} em todas as bases</p>
+                </div>`;
+
+            return header + html;
+        }
+    </script>
+</body>
+</html>

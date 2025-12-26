@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+
+        .glass {
+            background: rgba(30, 41, 59, 0.45);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+        }
+
+        /* Desativa hover em dispositivos touch */
+        @media (hover: none) {
+            .hover\\:scale-105, .group:hover\\:scale-110 { transform: none !important; }
+        }
+    </style>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Código PIX copiado com sucesso! 🎉');
+            }, () => {
+                alert('Falha ao copiar o código PIX.');
+            });
+        }
+    </script>
+</head>
+
+<body class="bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 text-gray-100 min-h-screen">
+
+    <!-- HEADER -->
+    <header class="backdrop-blur-xl bg-slate-900/90 border-b border-blue-500/30 sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center text-3xl shadow-xl shadow-green-600/40 animate-float">
+                    💳
+                </div>
+                <h1 class="text-2xl font-extrabold bg-gradient-to-r from-cyan-400 to-green-300 bg-clip-text text-transparent">
+                    <%= title %>
+                </h1>
+            </div>
+
+            <!-- Menu Desktop -->
+            <nav class="hidden md:flex items-center gap-8">
+                <div class="flex items-center gap-4 text-sm">
+                    <span class="text-gray-300">Olá,</span>
+                    <span class="font-bold text-white"><%= username %></span>
+                    <span>👋</span>
+                </div>
+                <div class="flex gap-3">
+                    <a href="/dashboard" class="px-6 py-2.5 text-sm font-medium bg-blue-600/20 text-blue-300 rounded-xl hover:bg-blue-600/30 transition">
+                        Dashboard
+                    </a>
+                    <a href="/logout" class="px-6 py-2.5 text-sm font-medium bg-red-600/30 text-red-400 rounded-xl hover:bg-red-600/40 transition">
+                        Sair
+                    </a>
+                </div>
+            </nav>
+
+            <!-- Botão Menu Mobile -->
+            <button id="mobile-menu-btn" class="md:hidden text-3xl text-gray-200 focus:outline-none" aria-label="Menu">
+                ☰
+            </button>
+        </div>
+    </header>
+
+    <!-- Overlay + Menu Mobile Lateral -->
+    <div id="mobile-overlay" class="fixed inset-0 bg-black/70 z-40 hidden"></div>
+    <div id="mobile-menu" class="fixed right-0 top-0 h-full w-80 max-w-full bg-slate-900/95 backdrop-blur-2xl border-l border-blue-500/30 z-50 transform translate-x-full transition-transform duration-300">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-10">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center text-3xl shadow-xl">
+                        💳
+                    </div>
+                    <span class="text-xl font-bold text-white"><%= username %></span>
+                </div>
+                <button id="mobile-close-btn" class="text-3xl text-gray-400 hover:text-white">✕</button>
+            </div>
+            <nav class="flex flex-col gap-4">
+                <a href="/dashboard" class="px-6 py-4 text-lg text-blue-300 bg-white/5 rounded-2xl hover:bg-white/10 transition text-center">
+                    📊 Dashboard
+                </a>
+                <a href="/billing" class="px-6 py-4 text-lg font-bold text-cyan-300 bg-cyan-600/20 rounded-2xl text-center">
+                    💳 Billing (Atual)
+                </a>
+                <a href="/logout" class="px-6 py-4 text-lg font-medium bg-red-600/30 text-red-400 rounded-2xl hover:bg-red-600/40 transition text-center">
+                    🚪 Sair
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- MAIN -->
+    <main class="max-w-7xl mx-auto px-4 py-8 pb-20">
+
+        <!-- Cabeçalho da Página -->
+        <section class="mb-10">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-3">Seu Plano e Pagamentos</h2>
+            <p class="text-lg text-gray-400">Renove seu plano com PIX instantâneo e acompanhe todas as transações</p>
+        </section>
+
+        <!-- Mensagens de Feedback -->
+        <% if (message) { %>
+            <div class="glass border border-green-500/50 rounded-2xl p-6 mb-8 shadow-xl shadow-green-500/30">
+                <p class="text-green-300 text-lg font-medium text-center"><%= message %></p>
+            </div>
+        <% } %>
+        <% if (error) { %>
+            <div class="glass border border-red-500/50 rounded-2xl p-6 mb-8 shadow-xl shadow-red-500/30">
+                <p class="text-red-300 text-lg font-medium text-center"><%= error %></p>
+            </div>
+        <% } %>
+
+        <!-- PLANO ATUAL -->
+        <section class="glass rounded-3xl p-6 md:p-10 mb-10 shadow-2xl shadow-blue-600/30 border-blue-500/40 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-cyan-600/10"></div>
+            <div class="relative z-10">
+                <h3 class="text-2xl md:text-3xl font-bold text-white mb-8 flex items-center gap-3">
+                    <span class="text-4xl">💎</span> Plano Atual
+                </h3>
+
+                <div class="grid grid-cols-1 gap-6 mb-8">
+                    <div class="bg-slate-800/70 rounded-2xl p-6 border border-blue-500/40">
+                        <p class="text-gray-400 text-sm mb-2">Plano</p>
+                        <p class="text-3xl md:text-4xl font-extrabold text-cyan-400"><%= plan.name %></p>
+                    </div>
+                    <div class="bg-slate-800/70 rounded-2xl p-6 border border-blue-500/40">
+                        <p class="text-gray-400 text-sm mb-3">Uso Mensal</p>
+                        <p class="text-2xl font-bold text-white mb-4"><%= plan.used %> / <%= plan.limit %> requests</p>
+                        <div class="w-full bg-slate-700 rounded-full h-5 overflow-hidden">
+                            <div class="bg-gradient-to-r from-blue-500 to-cyan-500 h-5 rounded-full transition-all duration-1000"
+                                 style="width: <%= (plan.used / plan.limit * 100) %>%"></div>
+                        </div>
+                        <p class="text-sm text-gray-400 mt-3"><%= Math.round(plan.used / plan.limit * 100) %>% utilizado</p>
+                    </div>
+                    <div class="bg-slate-800/70 rounded-2xl p-6 border border-green-500/40">
+                        <p class="text-gray-400 text-sm mb-2">Renovação</p>
+                        <p class="text-2xl md:text-3xl font-bold text-green-400"><%= plan.expiresAt %></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GERAR NOVO PIX -->
+        <section class="glass rounded-3xl p-6 md:p-10 mb-10 shadow-2xl shadow-cyan-600/30 border-cyan-500/40">
+            <h3 class="text-2xl md:text-3xl font-bold text-white mb-8 flex items-center gap-3">
+                <span class="text-4xl">⚡</span> Gerar Novo PIX
+            </h3>
+
+            <form id="pix-form" class="max-w-lg mx-auto">
+                <div class="mb-8">
+                    <label for="amount" class="block text-lg font-medium text-gray-300 mb-3">Valor do pagamento (R$)</label>
+                    <input type="number" id="amount" name="amount" step="0.01" min="0.01" required placeholder="Ex: 49.90"
+                           class="w-full px-6 py-4 text-xl bg-slate-800/70 border border-cyan-500/50 rounded-2xl focus:outline-none focus:border-cyan-400 focus:ring-4 focus:ring-cyan-500/30 text-white">
+                </div>
+
+                <button type="submit"
+                        class="w-full px-8 py-5 text-xl font-bold text-white bg-gradient-to-r from-green-600 to-emerald-600 rounded-2xl hover:from-green-700 hover:to-emerald-700 active:scale-95 transition-all shadow-xl shadow-green-600/50">
+                    Gerar PIX Agora
+                </button>
+            </form>
+        </section>
+
+        <!-- ÁREA DE EXIBIÇÃO DO PIX GERADO -->
+        <section id="pix-display" class="hidden glass rounded-3xl p-6 md:p-10 mb-10 shadow-2xl shadow-green-600/40 border-green-500/60">
+            <h3 class="text-2xl md:text-3xl font-bold text-white mb-6 text-center flex items-center justify-center gap-3">
+                <span class="text-5xl">✅</span> PIX Gerado com Sucesso!
+            </h3>
+            <p class="text-lg md:text-xl text-gray-300 text-center mb-10">Escaneie o QR Code ou use o código copia e cola</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="text-center">
+                    <img id="pix-qrcode" src="" alt="QR Code PIX" class="w-64 h-64 md:w-80 md:h-80 mx-auto rounded-2xl shadow-2xl border-4 border-green-500/60">
+                    <p class="mt-6 text-lg text-gray-400">Escaneie com seu app bancário</p>
+                </div>
+
+                <div>
+                    <label class="block text-lg font-medium text-gray-300 mb-4">Código Copia e Cola</label>
+                    <textarea id="pix-copypaste" readonly rows="6"
+                              class="w-full px-6 py-4 bg-slate-800/70 border border-cyan-500/50 rounded-2xl font-mono text-sm text-gray-200 resize-none"></textarea>
+                    <button onclick="copyToClipboard(document.getElementById('pix-copypaste').value)"
+                            class="mt-6 w-full px-8 py-4 text-xl font-bold text-white bg-gradient-to-r from-blue-600 to-cyan-600 rounded-2xl hover:from-blue-700 hover:to-cyan-700 active:scale-95 transition-all shadow-xl shadow-cyan-600/50">
+                        📋 Copiar Código PIX
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- HISTÓRICO DE TRANSAÇÕES -->
+        <section class="glass rounded-3xl p-6 md:p-10 shadow-2xl shadow-blue-600/30 border-blue-500/40">
+            <h3 class="text-2xl md:text-3xl font-bold text-white mb-8 flex items-center gap-3">
+                <span class="text-4xl">📜</span> Histórico de Transações PIX
+            </h3>
+
+            <% if (pixTransactions.length === 0) { %>
+                <p class="text-center text-xl text-gray-400 py-12">Nenhuma transação encontrada ainda.</p>
+            <% } else { %>
+                <div class="overflow-x-auto -mx-4 sm:mx-0">
+                    <table class="min-w-full divide-y divide-blue-500/30 text-sm">
+                        <thead class="bg-slate-800/60">
+                            <tr>
+                                <th class="px-4 py-4 text-left font-bold text-cyan-300">ID</th>
+                                <th class="px-4 py-4 text-left font-bold text-cyan-300">Valor</th>
+                                <th class="px-4 py-4 text-left font-bold text-cyan-300">Status</th>
+                                <th class="px-4 py-4 text-center font-bold text-cyan-300">QR Code</th>
+                                <th class="px-4 py-4 text-left font-bold text-cyan-300">Copia e Cola</th>
+                                <th class="px-4 py-4 text-left font-bold text-cyan-300 hidden sm:table-cell">Criado</th>
+                                <th class="px-4 py-4 text-left font-bold text-cyan-300 hidden md:table-cell">Expira</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-blue-500/20">
+                            <% pixTransactions.forEach(function(tx) { %>
+                                <tr class="hover:bg-slate-800/40 transition">
+                                    <td class="px-4 py-4 font-mono text-gray-400 text-xs"><%= tx.clientIdentifier.substring(0,12) %>...</td>
+                                    <td class="px-4 py-4 font-bold text-white">R$ <%= tx.amount.toFixed(2) %></td>
+                                    <td class="px-4 py-4">
+                                        <% if (tx.status === 'COMPLETED') { %>
+                                            <span class="px-3 py-1 text-xs font-bold rounded-full bg-green-600/30 text-green-300 border border-green-500/50">Pago</span>
+                                        <% } else if (tx.status === 'PENDING') { %>
+                                            <span class="px-3 py-1 text-xs font-bold rounded-full bg-yellow-600/30 text-yellow-300 border border-yellow-500/50">Pendente</span>
+                                        <% } else if (tx.status === 'EXPIRED') { %>
+                                            <span class="px-3 py-1 text-xs font-bold rounded-full bg-red-600/30 text-red-300 border border-red-500/50">Expirado</span>
+                                        <% } else { %>
+                                            <span class="px-3 py-1 text-xs font-bold rounded-full bg-gray-600/30 text-gray-300"><%= tx.status %></span>
+                                        <% } %>
+                                    </td>
+                                    <td class="px-4 py-4 text-center">
+                                        <% if (tx.qr_code_data) { %>
+                                            <img src="<%= tx.qr_code_data %>" alt="QR" class="w-16 h-16 rounded-lg border-2 border-blue-500/50 shadow-md inline-block">
+                                        <% } else { %>
+                                            <span class="text-gray-500 text-xs">—</span>
+                                        <% } %>
+                                    </td>
+                                    <td class="px-4 py-4 text-xs">
+                                        <% if (tx.copy_paste_code) { %>
+                                            <button onclick="copyToClipboard('<%= tx.copy_paste_code %>')"
+                                                    class="text-blue-400 hover:text-cyan-300 font-medium underline">
+                                                Copiar
+                                            </button>
+                                        <% } else { %>
+                                            <span class="text-gray-500">—</span>
+                                        <% } %>
+                                    </td>
+                                    <td class="px-4 py-4 text-gray-400 hidden sm:table-cell"><%= new Date(tx.created_at).toLocaleDateString('pt-BR') %></td>
+                                    <td class="px-4 py-4 text-gray-400 hidden md:table-cell"><%= new Date(tx.expires_at).toLocaleDateString('pt-BR') %></td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            <% } %>
+        </section>
+    </main>
+
+    <!-- Scripts -->
+    <script>
+        // Menu Mobile
+        const btn = document.getElementById('mobile-menu-btn');
+        const closeBtn = document.getElementById('mobile-close-btn');
+        const menu = document.getElementById('mobile-menu');
+        const overlay = document.getElementById('mobile-overlay');
+
+        function openMenu() {
+            menu.classList.remove('translate-x-full');
+            overlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            menu.classList.add('translate-x-full');
+            overlay.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        btn.addEventListener('click', openMenu);
+        closeBtn.addEventListener('click', closeMenu);
+        overlay.addEventListener('click', closeMenu);
+
+        // Formulário de Geração de PIX
+        document.getElementById('pix-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const amount = parseFloat(document.getElementById('amount').value);
+
+            if (isNaN(amount) || amount <= 0) {
+                alert('Insira um valor válido maior que zero.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/pix/receber/7351792062/${amount}`);
+                if (!response.ok) {
+                    const err = await response.json();
+                    throw new Error(err.error || 'Erro ao gerar PIX');
+                }
+                const data = await response.json();
+
+                document.getElementById('pix-qrcode').src = data.pix.qrcode;
+                document.getElementById('pix-copypaste').value = data.pix.copypaste;
+                document.getElementById('pix-display').classList.remove('hidden');
+
+                // Scroll suave para o PIX gerado
+                document.getElementById('pix-display').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            } catch (err) {
+                alert(err.message);
+            }
+        });
+    </script>
+</body>
+</html>

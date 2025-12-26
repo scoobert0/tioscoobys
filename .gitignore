@@ -1,0 +1,25 @@
+# Bancos de dados
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-shm
+*.db-wal
+*.sqlite-wal
+*.sqlite-shm
+
+
+# CSV
+*.csv
+
+# Node
+node_modules/
+
+# Variáveis de ambiente
+.env
+
+# Logs / processos
+pm2-logs/
+
+# Arquivo de saída
+output.json

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | FR4UD Platform</title>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #1e293b, #020617);
+            color: #e5e7eb;
+        }
+
+        .login-container {
+            background: #020617;
+            padding: 40px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            border: 1px solid #1e293b;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 24px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #f9fafb;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #9ca3af;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+            color: #9ca3af;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #1e293b;
+            background: #020617;
+            color: #f9fafb;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 1px #6366f1;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            transition: all 0.2s ease;
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(99,102,241,0.4);
+        }
+
+        .error {
+            background: rgba(239,68,68,0.15);
+            border: 1px solid rgba(239,68,68,0.4);
+            color: #fecaca;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+        }
+
+        .footer {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <h1>FR4UD API</h1>
+        <p class="subtitle">Access your dashboard</p>
+
+        <% if (error) { %>
+            <div class="error"><%= error %></div>
+        <% } %>
+
+        <form action="/login" method="POST">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required autocomplete="username">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required autocomplete="current-password">
+            </div>
+
+            <button type="submit">Log in</button>
+        </form>
+
+        <div class="footer">
+            Don't have an account? <a href="/register">Register here</a><br>
+            © <%= new Date().getFullYear() %> FR4UD Platform
+        </div>
+    </div>
+</body>
+</html>

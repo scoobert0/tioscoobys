@@ -1,0 +1,12 @@
+<%- include('layout', { 
+    title: 'PIX Redirect', 
+    user: user, 
+    activePage: 'pix',
+    body: `
+    <script>
+        window.location.replace('/billing');
+    </script>
+    <div class="mt-4 text-center">
+        <p class="text-gray-400">Redirecting to Billing & PIX page...</p>
+    </div>
+` }) %>

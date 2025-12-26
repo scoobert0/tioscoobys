@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Status</title>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-200 min-h-screen">
+
+    <!-- HEADER -->
+    <header class="bg-gray-800 shadow">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold">System Status</h1>
+
+            <div class="flex items-center gap-4">
+                <span class="text-sm text-gray-400">
+                    Logado como <strong class="text-white"><%= user.username %></strong>
+                </span>
+                <a href="/logout" class="text-red-400 hover:text-red-300 text-sm font-semibold">
+                    Sair
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAV -->
+    <nav class="bg-gray-800 border-t border-gray-700">
+        <div class="max-w-7xl mx-auto px-6">
+            <ul class="flex gap-6 text-sm font-medium">
+                <li>
+                    <a href="/dashboard" class="block py-3 text-gray-400 hover:text-white">
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="/status"
+                       class="block py-3 <%= activePage === 'status' ? 'text-white border-b-2 border-blue-500' : 'text-gray-400 hover:text-white' %>">
+                        Status
+                    </a>
+                </li>
+                <li>
+                    <a href="/logs" class="block py-3 text-gray-400 hover:text-white">
+                        Logs
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- CONTENT -->
+    <main class="max-w-7xl mx-auto px-6 py-6">
+
+        <p class="text-gray-400 mb-6">
+            Status em tempo quase real dos serviços principais. Transparência total, sem caô.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <!-- API STATUS -->
+            <div class="p-6 bg-gray-800 rounded-lg shadow-md flex items-center space-x-4">
+                <span class="relative flex h-3 w-3">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full <%= systemStatus.api === 'Online' ? 'bg-green-400' : 'bg-red-400' %> opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 <%= systemStatus.api === 'Online' ? 'bg-green-500' : 'bg-red-500' %>"></span>
+                </span>
+                <div>
+                    <h3 class="text-lg font-semibold text-white">API Service</h3>
+                    <p class="text-gray-400">
+                        Status:
+                        <span class="font-bold <%= systemStatus.api === 'Online' ? 'text-green-400' : 'text-red-400' %>">
+                            <%= systemStatus.api %>
+                        </span>
+                    </p>
+                    <p class="text-xs text-gray-500 mt-1">
+                        <%= systemStatus.details.api %>
+                    </p>
+                </div>
+            </div>
+
+            <!-- DATABASE STATUS -->
+            <div class="p-6 bg-gray-800 rounded-lg shadow-md flex items-center space-x-4">
+                <span class="relative flex h-3 w-3">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full <%= systemStatus.database === 'OK' ? 'bg-green-400' : 'bg-red-400' %> opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 <%= systemStatus.database === 'OK' ? 'bg-green-500' : 'bg-red-500' %>"></span>
+                </span>
+                <div>
+                    <h3 class="text-lg font-semibold text-white">Database</h3>
+                    <p class="text-gray-400">
+                        Status:
+                        <span class="font-bold <%= systemStatus.database === 'OK' ? 'text-green-400' : 'text-red-400' %>">
+                            <%= systemStatus.database %>
+                        </span>
+                    </p>
+                    <p class="text-xs text-gray-500 mt-1">
+                        <%= systemStatus.details.database %>
+                    </p>
+                </div>
+            </div>
+
+            <!-- PIX GATEWAY STATUS -->
+            <div class="p-6 bg-gray-800 rounded-lg shadow-md flex items-center space-x-4">
+                <span class="relative flex h-3 w-3">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full
+                        <%= systemStatus.pixGateway === 'OK'
+                            ? 'bg-green-400'
+                            : (systemStatus.pixGateway === 'UNSTABLE' ? 'bg-yellow-400' : 'bg-red-400') %>
+                        opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3
+                        <%= systemStatus.pixGateway === 'OK'
+                            ? 'bg-green-500'
+                            : (systemStatus.pixGateway === 'UNSTABLE' ? 'bg-yellow-500' : 'bg-red-500') %>"></span>
+                </span>
+                <div>
+                    <h3 class="text-lg font-semibold text-white">PIX Gateway</h3>
+                    <p class="text-gray-400">
+                        Status:
+                        <span class="font-bold
+                            <%= systemStatus.pixGateway === 'OK'
+                                ? 'text-green-400'
+                                : (systemStatus.pixGateway === 'UNSTABLE' ? 'text-yellow-400' : 'text-red-400') %>">
+                            <%= systemStatus.pixGateway %>
+                        </span>
+                    </p>
+                    <p class="text-xs text-gray-500 mt-1">
+                        <%= systemStatus.details.pixGateway %>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <p class="text-sm text-gray-500 mt-8">
+            Última verificação:
+            <span class="font-mono">
+                <%= systemStatus.lastChecked
+                    ? new Date(systemStatus.lastChecked).toLocaleString()
+                    : 'N/A' %>
+            </span>
+        </p>
+
+    </main>
+
+</body>
+</html>

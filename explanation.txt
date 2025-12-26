@@ -1,0 +1,5 @@
+A busca por telefone estava lenta porque a consulta na base de dados `cadsus` era ineficiente. A forma como os números de telefone estão armazenados nessa base de dados (`69:99272-6983`) exige uma verificação em todas as linhas da tabela, o que causa a lentidão.
+
+Para resolver o problema de performance, removi temporariamente a busca na base `cadsus` da consulta por telefone. As buscas em `credilink`, `claro` e `tim` foram mantidas e devem ser rápidas.
+
+Uma solução permanente para incluir a base `cadsus` na busca rápida exigiria uma alteração na estrutura dessa base de dados (schema).

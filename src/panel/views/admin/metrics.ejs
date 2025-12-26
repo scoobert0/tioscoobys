@@ -1,0 +1,227 @@
+<%- include('../layout', { 
+  title: 'Admin Overview', 
+  user: user, 
+  activePage: 'admin-metrics',
+  body: `
+  <div class="mt-4">
+
+    <!-- Descrição geral do painel admin -->
+    <p class="text-gray-400 mb-6">
+      Métricas globais do sistema e controles administrativos.
+      Aqui é a sala de controle. 🧠
+    </p>
+
+    <!-- =========================
+         MÉTRICAS GERAIS DO SISTEMA
+         ========================= -->
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+
+      <!-- Total de usuários -->
+      <div class="p-6 bg-gray-800 rounded-lg shadow-md">
+        <h4 class="text-sm font-medium text-gray-400">Total Users</h4>
+        <p class="mt-2 text-3xl font-semibold text-white">
+          <%= adminStats.totalUsers %>
+        </p>
+      </div>
+
+      <!-- Usuários suspensos -->
+      <div class="p-6 bg-gray-800 rounded-lg shadow-md">
+        <h4 class="text-sm font-medium text-gray-400">Suspended Users</h4>
+        <p class="mt-2 text-3xl font-semibold text-red-400">
+          <%= adminStats.suspendedUsers %>
+        </p>
+      </div>
+
+      <!-- Total de API Keys -->
+      <div class="p-6 bg-gray-800 rounded-lg shadow-md">
+        <h4 class="text-sm font-medium text-gray-400">Total API Keys</h4>
+        <p class="mt-2 text-3xl font-semibold text-white">
+          <%= adminStats.totalApiKeys %>
+        </p>
+      </div>
+
+      <!-- API Keys ativas -->
+      <div class="p-6 bg-gray-800 rounded-lg shadow-md">
+        <h4 class="text-sm font-medium text-gray-400">Active API Keys</h4>
+        <p class="mt-2 text-3xl font-semibold text-green-400">
+          <%= adminStats.activeApiKeys %>
+        </p>
+      </div>
+
+    </div>
+
+    <!-- =========================
+         VISÃO GERAL DE PIX
+         ========================= -->
+    <h3 class="text-xl font-semibold text-white mt-10">
+      System PIX Overview
+    </h3>
+
+    <div class="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-2">
+
+      <!-- Gráfico de status do PIX -->
+      <div class="p-6 bg-gray-800 rounded-lg shadow-md">
+        <h4 class="text-lg font-semibold text-white">
+          PIX Status Distribution
+        </h4>
+        <canvas id="pixStatusChart" class="mt-4"></canvas>
+      </div>
+
+      <!-- Ações administrativas rápidas -->
+      <div class="p-6 bg-gray-800 rounded-lg shadow-md">
+
+        <h4 class="text-lg font-semibold text-white">
+          PIX & API Key Management
+        </h4>
+
+        <p class="text-gray-400 mb-4">
+          Ações rápidas pra criar usuário, liberar acesso e girar chave.
+          Sem burocracia.
+        </p>
+
+        <!-- =========================
+             CRIAÇÃO DE USUÁRIO
+             ========================= -->
+        <form 
+          action="/admin/create-user" 
+          method="POST"
+          class="mb-6 p-4 border border-gray-700 rounded-lg"
+        >
+          <h4 class="text-lg font-semibold text-white mb-2">
+            Create New User
+          </h4>
+
+          <div class="mb-2">
+            <input 
+              type="text" 
+              name="username" 
+              placeholder="Username"
+              class="w-full p-2 bg-gray-700 border border-gray-600 rounded-md text-gray-200"
+              required
+            >
+          </div>
+
+          <div class="mb-2">
+            <input 
+              type="password" 
+              name="password" 
+              placeholder="Password"
+              class="w-full p-2 bg-gray-700 border border-gray-600 rounded-md text-gray-200"
+              required
+            >
+          </div>
+
+          <div class="mb-4">
+            <select 
+              name="role" 
+              class="w-full p-2 bg-gray-700 border border-gray-600 rounded-md text-gray-200"
+            >
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+
+          <button 
+            type="submit"
+            class="px-4 py-2 font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700"
+          >
+            Create User
+          </button>
+        </form>
+
+        <!-- =========================
+             CRIAÇÃO DE API KEY
+             ========================= -->
+        <form 
+          action="/admin/create-key" 
+          method="POST"
+          class="p-4 border border-gray-700 rounded-lg"
+        >
+          <h4 class="text-lg font-semibold text-white mb-2">
+            Create New API Key
+          </h4>
+
+          <div class="mb-2">
+            <select 
+              name="user_id" 
+              class="w-full p-2 bg-gray-700 border border-gray-600 rounded-md text-gray-200"
+              required
+            >
+              <% allUsers.forEach(u => { %>
+                <option value="<%= u.id %>">
+                  <%= u.username %>
+                </option>
+              <% }) %>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <select 
+              name="plan" 
+              class="w-full p-2 bg-gray-700 border border-gray-600 rounded-md text-gray-200"
+              required
+            >
+              <option value="test">Test (1 day)</option>
+              <option value="weekly">Weekly (7 days)</option>
+              <option value="monthly">Monthly (30 days)</option>
+            </select>
+          </div>
+
+          <button 
+            type="submit"
+            class="px-4 py-2 font-semibold text-white bg-green-600 rounded-md hover:bg-green-700"
+          >
+            Create API Key
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       SCRIPT DO GRÁFICO PIX
+       ========================= -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const ctx = document
+        .getElementById('pixStatusChart')
+        .getContext('2d');
+
+      const pixStats = <%- JSON.stringify(adminStats.pixStatusDistribution) %>;
+
+      const labels = Object.keys(pixStats);
+      const data = Object.values(pixStats);
+
+      // Cores por status (padrão SaaS)
+      const colors = {
+        PENDING: '#FCD34D',
+        COMPLETED: '#34D399',
+        EXPIRED: '#F87171',
+        FAILED: '#EF4444'
+      };
+
+      new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels,
+          datasets: [{
+            data,
+            backgroundColor: labels.map(
+              label => colors[label] || '#9CA3AF'
+            ),
+            hoverOffset: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              labels: { color: '#9CA3AF' }
+            }
+          }
+        }
+      });
+    });
+  </script>
+` }) %>

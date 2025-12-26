@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Highlight.js para código colorido -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        
+        .glass {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-slate-900 via-blue-900/30 to-slate-900 text-gray-100 min-h-screen">
+
+    <!-- HEADER -->
+    <header class="backdrop-blur-lg bg-slate-900/70 border-b border-blue-500/20 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl flex items-center justify-center text-3xl shadow-2xl shadow-blue-500/30 animate-float">
+                    📘
+                </div>
+                <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
+                    <%= title %>
+                </h1>
+            </div>
+
+            <div class="flex items-center gap-8">
+                <span class="text-sm text-gray-300">
+                    Olá, <span class="font-semibold text-white"><%= username %></span> 👋
+                </span>
+                <div class="flex gap-4">
+                    <a href="/dashboard" class="px-6 py-3 text-sm font-medium bg-blue-600/20 text-blue-300 rounded-xl hover:bg-blue-600/40 hover:scale-105 transition-all shadow-md">
+                        Dashboard
+                    </a>
+                    <a href="/logout" class="px-6 py-3 text-sm font-medium bg-red-600/20 text-red-400 rounded-xl hover:bg-red-600/30 hover:scale-105 transition-all shadow-md">
+                        Sair
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="max-w-5xl mx-auto px-6 py-12">
+        <div class="text-center mb-14">
+            <h2 class="text-5xl font-bold text-white mb-5">Documentação da API</h2>
+            <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                Integre facilmente nossa poderosa API de consultas com endpoints rápidos e confiáveis.
+            </p>
+        </div>
+
+        <!-- AUTENTICAÇÃO -->
+        <div class="glass rounded-3xl p-10 mb-12 shadow-2xl shadow-blue-500/20 border-blue-500/30">
+            <h3 class="text-3xl font-bold text-white mb-6 flex items-center gap-4">
+                <span class="text-4xl">🔐</span> Autenticação
+            </h3>
+            <p class="text-gray-300 mb-8 text-lg">
+                Todas as requisições devem incluir sua chave de API no header:
+            </p>
+            <pre class="bg-slate-800/80 border border-blue-500/40 rounded-2xl p-6 overflow-x-auto shadow-inner"><code class="language-http">X-API-Key: SUA_API_KEY_AQUI</code></pre>
+            <p class="text-gray-300 mt-8">
+                Gerencie suas chaves na seção <a href="/api-keys" class="text-blue-300 hover:text-cyan-300 underline font-medium">API Keys</a>.
+            </p>
+        </div>
+
+        <!-- PERFORMANCE -->
+        <div class="glass rounded-3xl p-8 mb-12 shadow-xl shadow-cyan-500/10 border-green-500/30">
+            <div class="flex items-start gap-6">
+                <span class="text-5xl animate-float">⚡</span>
+                <div>
+                    <h4 class="text-2xl font-bold text-cyan-300 mb-3">Performance Otimizada</h4>
+                    <p class="text-gray-300 text-lg">
+                        Consultas processadas <strong>assincronamente</strong> em pool dedicado de workers — experiência fluida mesmo em operações intensivas.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ENDPOINTS -->
+        <h3 class="text-4xl font-bold text-white mb-10 flex items-center gap-5">
+            <span class="text-5xl">🔗</span> Endpoints Disponíveis
+        </h3>
+
+        <p class="text-lg text-gray-400 mb-10 bg-slate-800/50 rounded-xl p-5 inline-block">
+            Todos suportam <code class="bg-slate-700 px-3 py-1 rounded-lg">?level=basic|medium|advanced</code> (padrão: <code>basic</code>)
+        </p>
+
+        <div class="grid gap-8">
+            <% 
+            const endpoints = [
+                { method: "GET", path: "/api/search/nome/:search", title: "Pesquisa por Nome ou CPF", desc: "Busca por nome completo ou CPF (prioriza CPF se válido)" },
+                { method: "GET", path: "/api/search/telefone/:telefone", title: "Pesquisa por Telefone", desc: "Número completo com DDD" },
+                { method: "GET", path: "/api/search/cep/:cep", title: "Pesquisa por CEP", desc: "Com ou sem formatação" },
+                { method: "GET", path: "/api/search/cpf/:cpf", title: "Pesquisa por CPF", desc: "Consulta detalhada" },
+                { method: "GET", path: "/api/search/placa/:placa", title: "Placa (Todos os Modelos)", desc: "Detecta Mercosul ou antigo automaticamente" },
+                { method: "GET", path: "/api/search/placa_antiga/:placa", title: "Placa Antiga", desc: "Formato ABC1234" },
+                { method: "GET", path: "/api/search/placa_nova/:placa", title: "Placa Mercosul", desc: "Formato ABC1D23" },
+                { method: "GET", path: "/api/search/chassi/:chassi", title: "Pesquisa por Chassi", desc: "Número completo do veículo" },
+                { method: "GET", path: "/api/search/mae/:mae", title: "Nome da Mãe", desc: "Busca por nome completo da mãe" },
+                { method: "GET", path: "/api/search/score/cpf/:cpf", title: "Score por CPF", desc: "Informações de risco e score" },
+                { method: "GET", path: "/api/search/rg/:rg", title: "Pesquisa por RG", desc: "Documento de identidade" },
+                { method: "GET", path: "/api/search/foto/cpf/:cpf", title: "Foto por CPF", desc: "Imagem associada (quando disponível)" },
+                { method: "GET", path: "/api/familiares/irmaos/:mae", title: "Irmãos (Familiares)", desc: "Busca por nome da mãe" }
+            ];
+            %>
+
+            <% endpoints.forEach((ep, index) => { %>
+            <div class="group glass rounded-3xl p-10 hover:shadow-2xl hover:shadow-blue-500/30 hover:border-blue-500/50 hover:scale-[1.02] transition-all duration-500">
+                <div class="flex items-start gap-8">
+                    <div class="flex-shrink-0">
+                        <span class="inline-block px-6 py-3 bg-gradient-to-br from-blue-600 to-cyan-600 text-white font-mono text-lg rounded-2xl shadow-lg">
+                            <%= ep.method %>
+                        </span>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-2xl font-bold text-white mb-4">
+                            <%= (index + 1).toString().padStart(2, '0') %>. <%= ep.title %>
+                        </h4>
+                        <pre class="bg-slate-900/70 border border-blue-500/30 rounded-2xl p-6 overflow-x-auto mb-5 shadow-inner"><code class="language-http"><%= ep.method %> <%= ep.path %></code></pre>
+                        <p class="text-gray-300 text-lg"><%= ep.desc %></p>
+                    </div>
+                </div>
+            </div>
+            <% }) %>
+        </div>
+
+        <!-- ESTRUTURA DA RESPOSTA -->
+        <div class="glass rounded-3xl p-12 mt-16 shadow-2xl shadow-blue-500/20 border-blue-500/40">
+            <h3 class="text-3xl font-bold text-white mb-8 flex items-center gap-4">
+                <span class="text-4xl">📦</span> Estrutura da Resposta
+            </h3>
+            <pre class="bg-slate-900/80 border border-cyan-500/30 rounded-2xl p-8 overflow-x-auto shadow-inner"><code class="language-json">{
+  "success": true,
+  "data": {
+    "contatos": [ /* resultados */ ],
+    "cadsus": [ /* resultados */ ],
+    "scores": [ /* resultados */ ],
+    "veiculos": [ /* resultados */ ],
+    // outras bases disponíveis
+  },
+  "cached": false,
+  "timestamp": "2025-12-23T10:00:00Z"
+}</code></pre>
+        </div>
+
+        <!-- NÍVEIS DE DETALHE -->
+        <div class="grid md:grid-cols-3 gap-8 mt-16">
+            <div class="glass rounded-3xl p-8 text-center hover:scale-110 hover:shadow-2xl hover:shadow-blue-500/40 transition-all duration-300">
+                <div class="text-6xl mb-6">🎯</div>
+                <h4 class="text-2xl font-bold text-blue-300 mb-3">basic</h4>
+                <p class="text-gray-400">Campos essenciais (padrão)</p>
+            </div>
+            <div class="glass rounded-3xl p-8 text-center hover:scale-110 hover:shadow-2xl hover:shadow-cyan-500/40 transition-all duration-300">
+                <div class="text-6xl mb-6">🔍</div>
+                <h4 class="text-2xl font-bold text-cyan-300 mb-3">medium</h4>
+                <p class="text-gray-400">Dados adicionais relevantes</p>
+            </div>
+            <div class="glass rounded-3xl p-8 text-center hover:scale-110 hover:shadow-2xl hover:shadow-blue-400/50 transition-all duration-300">
+                <div class="text-6xl mb-6">💎</div>
+                <h4 class="text-2xl font-bold text-blue-200 mb-3">advanced</h4>
+                <p class="text-gray-400">Todos os campos disponíveis</p>
+            </div>
+        </div>
+
+        <!-- LIMITES -->
+        <div class="glass rounded-3xl p-10 mt-16 text-center shadow-2xl shadow-amber-500/10 border-amber-500/30">
+            <span class="text-5xl mb-6 inline-block animate-float">⚠️</span>
+            <h3 class="text-3xl font-bold text-amber-300 mb-5">Limites de Requisições</h3>
+            <p class="text-gray-300 text-lg max-w-3xl mx-auto">
+                Seu plano controla o volume de consultas. Acompanhe seu uso na área de 
+                <a href="/billing" class="text-amber-300 hover:text-white underline font-bold">Billing</a>.
+            </p>
+        </div>
+    </main>
+
+</body>
+</html>
